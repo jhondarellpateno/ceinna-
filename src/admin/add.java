@@ -48,16 +48,16 @@ public class add extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        Dashboard = new javax.swing.JLabel();
-        Orders = new javax.swing.JLabel();
-        Products = new javax.swing.JLabel();
-        Users = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         user = new javax.swing.JLabel();
         type = new javax.swing.JLabel();
         email = new javax.swing.JLabel();
         Dashboard4 = new javax.swing.JLabel();
         Dashboard1 = new javax.swing.JLabel();
+        Orders = new javax.swing.JLabel();
+        Products = new javax.swing.JLabel();
+        Users = new javax.swing.JLabel();
+        Dashboard = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -79,40 +79,6 @@ public class add extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(153, 153, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Dashboard.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        Dashboard.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Dashboard.setText("Profile");
-        jPanel2.add(Dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 300, 188, 20));
-
-        Orders.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        Orders.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Orders.setText("Orders");
-        jPanel2.add(Orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 210, 188, -1));
-
-        Products.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        Products.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Products.setText("Products");
-        jPanel2.add(Products, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 240, 188, -1));
-
-        Users.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        Users.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Users.setText("Users");
-        Users.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                UsersMouseClicked(evt);
-            }
-        });
-        jPanel2.add(Users, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 270, 188, -1));
-
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        jButton1.setText("Log Out");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 160, -1));
 
         user.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         user.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -138,7 +104,61 @@ public class add extends javax.swing.JFrame {
         Dashboard1.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         Dashboard1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Dashboard1.setText("Dashboard");
+        Dashboard1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Dashboard1MouseClicked(evt);
+            }
+        });
         jPanel2.add(Dashboard1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 180, 188, -1));
+
+        Orders.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        Orders.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Orders.setText("Orders");
+        Orders.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                OrdersMouseClicked(evt);
+            }
+        });
+        jPanel2.add(Orders, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 210, 188, -1));
+
+        Products.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        Products.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Products.setText("Products");
+        Products.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ProductsMouseClicked(evt);
+            }
+        });
+        jPanel2.add(Products, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 240, 188, -1));
+
+        Users.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        Users.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Users.setText("Users");
+        Users.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                UsersMouseClicked(evt);
+            }
+        });
+        jPanel2.add(Users, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 270, 188, -1));
+
+        Dashboard.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        Dashboard.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Dashboard.setText("Profile");
+        Dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                DashboardMouseClicked(evt);
+            }
+        });
+        jPanel2.add(Dashboard, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 300, 188, -1));
+
+        jButton1.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jButton1.setText("Log Out");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 350, 188, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 420));
 
@@ -186,7 +206,7 @@ public class add extends javax.swing.JFrame {
                 jTextField3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 230, 130, 20));
+        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 230, 130, 30));
 
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,17 +248,6 @@ public class add extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void UsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UsersMouseClicked
-
-    }//GEN-LAST:event_UsersMouseClicked
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        landing logout = new landing();
-        logout.setLocationRelativeTo(null);
-        logout.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
@@ -305,6 +314,48 @@ public class add extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void Dashboard1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Dashboard1MouseClicked
+        DashBAdmin dash = new DashBAdmin();
+        dash.setLocationRelativeTo(null);
+        dash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_Dashboard1MouseClicked
+
+    private void OrdersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OrdersMouseClicked
+        orders order = new orders();
+        order.setLocationRelativeTo(null);
+        order.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_OrdersMouseClicked
+
+    private void ProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProductsMouseClicked
+        products product = new products();
+        product.setLocationRelativeTo(null);
+        product.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_ProductsMouseClicked
+
+    private void UsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UsersMouseClicked
+        Masterlist user = new Masterlist();
+        user.setLocationRelativeTo(null);
+        user.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_UsersMouseClicked
+
+    private void DashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardMouseClicked
+        profile prof = new profile();
+        prof.setLocationRelativeTo(null);
+        prof.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_DashboardMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        landing logout = new landing();
+        logout.setLocationRelativeTo(null);
+        logout.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
