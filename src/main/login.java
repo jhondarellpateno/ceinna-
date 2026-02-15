@@ -182,7 +182,7 @@ public class login extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Hello " + name + "!\nLOGIN SUCCESS!");
 
                 if (type.equals("Admin")) {
-                    UserSession.setU_id(Integer.parseInt(user.get("ID").toString()));
+                    UserSession.setU_id(Integer.parseInt(user.get("id").toString()));
                     UserSession.setU_name(user.get("username").toString());
                     UserSession.setU_email(user.get("email").toString());
                     UserSession.setU_type(user.get("type").toString());
@@ -191,7 +191,7 @@ public class login extends javax.swing.JFrame {
                     dash.setVisible(true);
                     dash.setLocationRelativeTo(null);
                 } else if (type.equals("User")) {
-                    UserSession.setU_id(Integer.parseInt(user.get("ID").toString()));
+                    UserSession.setU_id(Integer.parseInt(user.get("id").toString()));
                     UserSession.setU_name(user.get("username").toString());
                     UserSession.setU_email(user.get("email").toString());
                     UserSession.setU_type(user.get("type").toString());
