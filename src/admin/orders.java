@@ -214,7 +214,7 @@ public class orders extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("ORDERS");
-        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, 168, 25));
+        getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, 168, 25));
 
         tableee.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

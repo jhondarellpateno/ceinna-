@@ -216,14 +216,14 @@ public class Masterlist extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 150, 70, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 150, 70, -1));
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 120, 20));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 120, 30));
 
         jButton3.setText("Add");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -247,7 +247,7 @@ public class Masterlist extends javax.swing.JFrame {
                 jToggleButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, 70, -1));
+        getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 143, 70, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -318,13 +318,6 @@ public class Masterlist extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_Dashboard1MouseClicked
 
-    private void OrdersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OrdersMouseClicked
-        orders order = new orders();
-        order.setLocationRelativeTo(null);
-        order.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_OrdersMouseClicked
-
     private void ProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProductsMouseClicked
         products product = new products();
         product.setLocationRelativeTo(null);
@@ -352,6 +345,13 @@ public class Masterlist extends javax.swing.JFrame {
         logout.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void OrdersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_OrdersMouseClicked
+        orders order = new orders();
+        order.setLocationRelativeTo(null);
+        order.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_OrdersMouseClicked
 
     /**
      * @param args the command line arguments
