@@ -285,14 +285,14 @@ public class Masterlist extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        int selectedRow = jTable1.getSelectedRow();
+    int selectedRow = jTable1.getSelectedRow();
 
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         String id = model.getValueAt(selectedRow, 0).toString();
         String newName = model.getValueAt(selectedRow, 1).toString();
         String newEmail = model.getValueAt(selectedRow, 2).toString();
-        String newType = model.getValueAt(selectedRow, 3).toString();
+        String newType = model.getValueAt(selectedRow, 5).toString();
         String newStatus = model.getValueAt(selectedRow, 4).toString();
 
         config conf = new config();

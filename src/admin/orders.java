@@ -41,7 +41,7 @@ public class orders extends javax.swing.JFrame {
 
     void displayORder() {
         config conf = new config();
-        String sql = "SELECT * FROM tbl_order";
+        String sql = "SELECT o_id, p_id, p_name FROM tbl_order";
         conf.displayData(sql, tableee);
 
     }
@@ -241,7 +241,7 @@ public class orders extends javax.swing.JFrame {
 
         config con = new config();
 
-        String sql = "SELECT o_id, p_name FROM tbl_order WHERE p_name = '" + findings + "' OR o_id = '" + findings;
+        String sql = "SELECT o_id, p_id, p_name FROM tbl_order WHERE p_name = '" + findings + "' OR o_id = '" + findings + "'";
         con.displayData(sql, tableee);
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
