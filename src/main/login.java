@@ -150,60 +150,55 @@ public class login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
-        String email = username.getText();
+        String emailInput = username.getText().trim();
         String pass = new String(password.getPassword());
-        
-        if (email.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please Input Your Email!");
+
+        if (emailInput.isEmpty() || pass.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all fields!");
             return;
         }
-        if (pass.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please Input Your Password!");
-            return;
-        }
+
         config db = new config();
         String hash = config.hashPassword(pass);
         String sql = "SELECT * FROM account WHERE email = ? AND password = ?";
 
-        List<Map<String, Object>> check = db.fetchRecords(sql, email, hash);
+        List<Map<String, Object>> check = db.fetchRecords(sql, emailInput, hash);
 
         if (check.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Wrong Username or Password!", "Message", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Wrong Email or Password!", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             Map<String, Object> user = check.get(0);
-            String name = user.get("username").toString();
             String stat = user.get("status").toString();
-            String type = user.get("type").toString();
-            String emails = user.get("email").toString();
 
             if (stat.equals("Pending")) {
-                JOptionPane.showMessageDialog(null, "Account is pending. Please contact admin for approval.");
-            } else if (stat.equals("Active")){
-                JOptionPane.showMessageDialog(null, "Hello " + name + "!\nLOGIN SUCCESS!");
+                JOptionPane.showMessageDialog(null, "Account is pending approval. Please contact Admin.");
+            } else if (stat.equals("Active")) {
 
-                if (type.equals("Admin")) {
-                    UserSession.setU_id(Integer.parseInt(user.get("id").toString()));
-                    UserSession.setU_name(user.get("username").toString());
-                    UserSession.setU_email(user.get("email").toString());
-                    UserSession.setU_type(user.get("type").toString());
-                    UserSession.setU_status(user.get("status").toString());
+                UserSession sess = UserSession.getInstance();
+                sess.setU_id(Integer.parseInt(user.get("id").toString()));
+                sess.setU_name(user.get("username").toString());
+                sess.setU_email(user.get("email").toString());
+                sess.setU_type(user.get("type").toString());
+                sess.setU_status(user.get("status").toString());
+
+                String savedImagePath = (user.get("image") != null) ? user.get("image").toString() : "";
+                sess.setImagePath(savedImagePath);
+
+
+                JOptionPane.showMessageDialog(null, "Welcome, " + sess.getU_name() + "!");
+
+                if (sess.getU_type().equalsIgnoreCase("Admin")) {
                     DashBAdmin dash = new DashBAdmin();
                     dash.setVisible(true);
                     dash.setLocationRelativeTo(null);
-                } else if (type.equals("User")) {
-                    UserSession.setU_id(Integer.parseInt(user.get("id").toString()));
-                    UserSession.setU_name(user.get("username").toString());
-                    UserSession.setU_email(user.get("email").toString());
-                    UserSession.setU_type(user.get("type").toString());
-                    UserSession.setU_status(user.get("status").toString());
-                    DashBUAcount users = new DashBUAcount();
-                    users.setVisible(true);
-                    users.setLocationRelativeTo(null);
+                } else {
+                    customer.DashBUAcount userDash = new customer.DashBUAcount();
+                    userDash.setVisible(true);
+                    userDash.setLocationRelativeTo(null);
                 }
 
                 this.dispose();
             }
-
             username.setText("");
             password.setText("");
         }
