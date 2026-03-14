@@ -335,7 +335,7 @@ public class products extends javax.swing.JFrame {
     }//GEN-LAST:event_UsersMouseClicked
 
     private void DashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardMouseClicked
-        profile prof = new profile();
+        adminprofile prof = new adminprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();
@@ -369,18 +369,27 @@ public class products extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Select a row first!");
             return;
         }
-
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
         String id = model.getValueAt(selectedRow, 0).toString();
+        String productName = model.getValueAt(selectedRow, 1).toString();
 
-        config conf = new config();
-        String sql = "DELETE FROM product WHERE p_id = ?";
-        conf.deleteRecord(sql, id);
+        int response = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to delete '" + productName + "' from the inventory?",
+                "Confirm Deletion",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
 
-        model.removeRow(selectedRow);
+        if (response == JOptionPane.YES_OPTION) {
+            config conf = new config();
+            String sql = "DELETE FROM product WHERE p_id = ?";
 
-        JOptionPane.showMessageDialog(null, "Deleted Successfully!");
+            conf.deleteRecord(sql, id);
+            model.removeRow(selectedRow);
+
+            JOptionPane.showMessageDialog(null, "Product deleted successfully!");
+        } else {
+            System.out.println("Deletion canceled by user.");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

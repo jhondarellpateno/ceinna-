@@ -208,7 +208,7 @@ public class add extends javax.swing.JFrame {
                 jTextField3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 230, 130, 30));
+        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 230, 130, 20));
 
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -240,13 +240,13 @@ public class add extends javax.swing.JFrame {
         jLabel7.setText("Password:");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 150, -1, -1));
 
-        jToggleButton1.setText("ADD");
+        jToggleButton1.setText("ADD USER");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jToggleButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, -1, -1));
+        getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -270,51 +270,55 @@ public class add extends javax.swing.JFrame {
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         config db = new config();
 
-        String username = jTextField1.getText();
-        String em = jTextField3.getText();
-        String pass = jPasswordField1.getText();
-        String ty = jTextField4.getText();
-        String stat = jTextField5.getText();
+        String username = jTextField1.getText().trim();
+        String em = jTextField3.getText().trim();
+        String pass = new String(jPasswordField1.getPassword()); 
+        String ty = jTextField4.getText().trim();   
+        String stat = "Active"; 
 
-        if (username.isEmpty() || em.isEmpty() || pass.isEmpty() || ty.isEmpty() || stat.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "All fields are required to fill in!");
+        if (username.isEmpty() || em.isEmpty() || pass.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all required fields!");
+            return;
+        }
+
+        if (pass.length() < 6) {
+            JOptionPane.showMessageDialog(null, "Password must be at least 6 characters long!");
             return;
         }
 
         String emailPattern = "^[A-Za-z0-9+_.-]+@(gmail\\.com|yahoo\\.com|outlook\\.com)$";
-
         if (!em.matches(emailPattern)) {
-            JOptionPane.showMessageDialog(null, "Invalid Email!");
+            JOptionPane.showMessageDialog(null, "Invalid Email! Use @gmail, @yahoo, or @outlook.");
+            jTextField3.setText("");
+            jTextField3.requestFocus();
+            return;
+        }
+
+        String qry = "SELECT u_id FROM tbl_user WHERE u_email = ?";
+        java.util.List<java.util.Map<String, Object>> result = db.fetchRecords(qry, em);
+        if (result.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "This email is already registered to a Twist & Tangle account!");
             jTextField1.setText("");
             jTextField3.setText("");
             jPasswordField1.setText("");
             jTextField4.setText("");
             jTextField5.setText("");
-            return;
-
-        }
-
-        String qry = "SELECT * FROM tbl_user WHERE u_email = ?";
-        java.util.List<java.util.Map<String, Object>> result = db.fetchRecords(qry, em);
-
-        if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Email already exists. Please enter another email.");
         } else {
-
             String hash = db.hashPassword(pass);
-            String sql = "INSERT INTO account ( username, email, password, type, status) VALUES ( ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO tbl_user (u_name, u_email, u_pass, u_type, u_status) VALUES (?, ?, ?, ?, ?)";
 
             db.addRecord(sql, username, em, hash, ty, stat);
 
-            JOptionPane.showMessageDialog(null, "Registered!");
+            JOptionPane.showMessageDialog(
+                    null, "Welcome to Twist & Tangle! Account Registered.");
 
             jTextField1.setText("");
             jTextField3.setText("");
             jPasswordField1.setText("");
             jTextField4.setText("");
             jTextField5.setText("");
-
         }
+
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void Dashboard1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Dashboard1MouseClicked
@@ -346,7 +350,7 @@ public class add extends javax.swing.JFrame {
     }//GEN-LAST:event_UsersMouseClicked
 
     private void DashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardMouseClicked
-        profile prof = new profile();
+        adminprofile prof = new adminprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();
@@ -373,16 +377,24 @@ public class add extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(add.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(add.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(add.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(add.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(add.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(add.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(add.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(add.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

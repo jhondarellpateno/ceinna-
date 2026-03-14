@@ -36,10 +36,10 @@ public class orders extends javax.swing.JFrame {
         user.setText(UserSession.getU_name());
         type.setText(UserSession.getU_type());
         email.setText(UserSession.getU_email());
-        displayORder();
+        displayOrder();
     }
 
-    void displayORder() {
+    void displayOrder() {
         config conf = new config();
         String sql = "SELECT o_id, p_id, p_name FROM tbl_order";
         conf.displayData(sql, tableee);
@@ -74,6 +74,7 @@ public class orders extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableee = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -228,6 +229,14 @@ public class orders extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 220, 365, 150));
 
+        jButton2.setText("Approve Order");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, -1, -1));
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -274,7 +283,7 @@ public class orders extends javax.swing.JFrame {
     }//GEN-LAST:event_UsersMouseClicked
 
     private void DashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardMouseClicked
-        profile prof = new profile();
+        adminprofile prof = new adminprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();
@@ -286,6 +295,39 @@ public class orders extends javax.swing.JFrame {
         logout.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        int rowIndex = tableee.getSelectedRow();
+
+        if (rowIndex == -1) {
+            JOptionPane.showMessageDialog(null, "Please select an order to approve from the list!");
+            return;
+        }
+
+        String orderId = tableee.getValueAt(rowIndex, 0).toString();
+        String currentStatus = tableee.getValueAt(rowIndex, 4).toString(); 
+
+        if (currentStatus.equalsIgnoreCase("Approved")) {
+            JOptionPane.showMessageDialog(null, "This order is already approved!");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(null,
+                "Do you want to approve Order #" + orderId + "?",
+                "Confirm Approval", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            config conf = new config();
+
+            String sql = "UPDATE tbl_order SET o_status = 'Approved' WHERE o_id = ?";
+            conf.updateRecord(sql, orderId);
+
+            JOptionPane.showMessageDialog(null, "Order #" + orderId + " has been approved!");
+
+            displayOrder();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -331,6 +373,7 @@ public class orders extends javax.swing.JFrame {
     private javax.swing.JLabel Users;
     private javax.swing.JLabel email;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;

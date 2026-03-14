@@ -229,7 +229,7 @@ public class DashBAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_ProductsMouseClicked
 
     private void DashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardMouseClicked
-        profile prof = new profile();
+        adminprofile prof = new adminprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();

@@ -37,10 +37,10 @@ public class viewOrder extends javax.swing.JFrame {
         user.setText(UserSession.getU_name());
         type.setText(UserSession.getU_type());
         email.setText(UserSession.getU_email());
-        displayUser();
+        displayOrder();
     }
 
-    void displayUser() {
+    void displayOrder() {
         config conf = new config();
         String sql = "SELECT * FROM tbl_order";
         conf.displayData(sql, tableee);
@@ -225,6 +225,11 @@ public class viewOrder extends javax.swing.JFrame {
                 jTextField1ActionPerformed(evt);
             }
         });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -325,7 +330,7 @@ public class viewOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        profile prof = new profile();
+        customerprofile prof = new customerprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();
@@ -337,6 +342,23 @@ public class viewOrder extends javax.swing.JFrame {
         logout.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        String findings = jTextField1.getText().trim();
+
+        if (findings.isEmpty()) {
+            displayOrder();
+            return;
+        }
+
+        config con = new config();
+
+        String sql = "SELECT o_id, p_name, o_quan, o_status FROM tbl_order "
+                + "WHERE p_name LIKE '%" + findings + "%' "
+                + "OR o_id LIKE '%" + findings + "%'";
+
+        con.displayData(sql, tableee);
+    }//GEN-LAST:event_jTextField1KeyReleased
 
     /**
      * @param args the command line arguments

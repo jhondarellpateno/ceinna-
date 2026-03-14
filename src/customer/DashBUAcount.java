@@ -258,7 +258,7 @@ public class DashBUAcount extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        profile prof = new profile();
+        customerprofile prof = new customerprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();

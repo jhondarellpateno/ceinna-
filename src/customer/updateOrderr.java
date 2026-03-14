@@ -7,6 +7,8 @@ package customer;
 
 import config.UserSession;
 import config.config;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import main.landing;
 import main.login;
@@ -334,18 +336,57 @@ public class updateOrderr extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
-        String orderId = jTextField2.getText();
-        String newPid = jTextField3.getText();
-        String newQty = jSpinner1.getValue().toString();
+        String orderId = jTextField2.getText().trim();
+        String newPid = jTextField3.getText().trim();
+        int newQty = (Integer) jSpinner1.getValue(); // Use Integer for math
+
+        if (orderId.isEmpty() || newPid.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select an Order and a Product first!");
+            return;
+        }
+
+        if (newQty <= 0) {
+            JOptionPane.showMessageDialog(null, "Quantity must be greater than zero!");
+            return;
+        }
 
         config conf = new config();
 
-        String sql = "UPDATE tbl_order SET p_id = ?, " + "p_name = (SELECT p_name FROM product WHERE p_id = ?), " + "o_quan = ? WHERE o_id = ?";
+        String checkProductSql = "SELECT p_name, p_price FROM product WHERE p_id = '" + newPid + "'";
 
-        conf.updateRecord(sql, newPid, newPid, newQty, orderId);
+        try {
+            List<Map<String, Object>> productData = conf.fetchRecords(checkProductSql);
 
-        JOptionPane.showMessageDialog(null, "Order updated based on Product Data!");
+            if (productData.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Product ID not found! Please enter a valid ID.");
+                return;
+            }
 
+            String productName = productData.get(0).get("p_name").toString();
+            double unitPrice = Double.parseDouble(productData.get(0).get("p_price").toString());
+
+            double newTotalAmount = unitPrice * newQty;
+
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "Update Order #" + orderId + " to:\n"
+                    + "Product: " + productName + "\n"
+                    + "New Total: ₱" + String.format("%.2f", newTotalAmount),
+                    "Confirm Update", JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                String updateSql = "UPDATE tbl_order SET p_id = ?, p_name = ?, o_quan = ?, o_totalpay = ? WHERE o_id = ?";
+
+                conf.updateRecord(updateSql, newPid, productName, newQty, newTotalAmount, orderId);
+
+                JOptionPane.showMessageDialog(null, "Order #" + orderId + " updated successfully!");
+
+                displayOrder();
+                displayProduct();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error updating order: " + e.getMessage());
+        }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
@@ -384,7 +425,7 @@ public class updateOrderr extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        profile prof = new profile();
+        customerprofile prof = new customerprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();

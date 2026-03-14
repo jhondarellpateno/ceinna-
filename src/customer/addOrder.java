@@ -317,21 +317,50 @@ public class addOrder extends javax.swing.JFrame {
         int rowIndex = table.getSelectedRow();
 
         if (rowIndex == -1) {
-            JOptionPane.showMessageDialog(null, "Please select a product first!");
+            JOptionPane.showMessageDialog(null, "Please select a crochet product from the shop first!");
             return;
         }
 
         String productId = table.getValueAt(rowIndex, 0).toString();
         String productName = table.getValueAt(rowIndex, 1).toString();
+        double unitPrice = Double.parseDouble(table.getValueAt(rowIndex, 4).toString());
 
-        String quan = jSpinner1.getValue().toString();
+        int quan = Integer.parseInt(jSpinner1.getValue().toString());
+        if (quan <= 0) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid quantity!");
+            return;
+        }
+
+        double totalAmount = unitPrice * quan;
+        int customerId = UserSession.getU_id();
+
         config conf = new config();
 
-        String sqlOrder = "INSERT INTO tbl_order (p_id, p_name, o_quan) VALUES (?, ?, ?)";
-        conf.addRecord(sqlOrder, productId, productName, quan);
+        String sqlOrder = "INSERT INTO tbl_order (p_id, p_name, o_totalpay, o_quan, o_status) VALUES (?, ?, ?, ?, 'Pending')";
 
-        JOptionPane.showMessageDialog(null, "Successfully added to Orders!");
+        conf.addRecord(sqlOrder, productId, productName, unitPrice, quan);
 
+        String receipt = "-------------------------------------------\n"
+                + "          TWIST & TANGLE RECEIPT           \n"
+                + "             'Made With Love'              \n"
+                + "-------------------------------------------\n"
+                + " Customer ID: " + customerId + "\n"
+                + " Item:        " + productName + "\n"
+                + " Quantity:    " + quan + " pc(s)\n"
+                + " Unit Price:  ₱" + String.format("%.2f", unitPrice) + "\n"
+                + "-------------------------------------------\n"
+                + " TOTAL DUE:   ₱" + String.format("%.2f", totalAmount) + "\n"
+                + "-------------------------------------------\n"
+                + " Status:      PENDING\n"
+                + " Thank you for supporting handmade! \n"
+                + "-------------------------------------------";
+
+        JOptionPane.showMessageDialog(null, receipt, "Order Confirmed", JOptionPane.INFORMATION_MESSAGE);
+
+        customer.DashBUAcount returns = new customer.DashBUAcount();
+        returns.setLocationRelativeTo(null);
+        returns.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
@@ -370,7 +399,7 @@ public class addOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel14MouseClicked
-        profile prof = new profile();
+        customerprofile prof = new customerprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();

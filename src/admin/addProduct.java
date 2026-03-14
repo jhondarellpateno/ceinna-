@@ -68,6 +68,8 @@ public class addProduct extends javax.swing.JFrame {
         jToggleButton1 = new javax.swing.JToggleButton();
         jSpinner1 = new javax.swing.JSpinner();
         jLabel6 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextFieldPrice = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -193,24 +195,24 @@ public class addProduct extends javax.swing.JFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jLabel4.setText("Name:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 150, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 180, -1, 10));
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 170, 130, -1));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 130, 20));
 
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 230, 130, 20));
+        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 260, 130, 20));
 
         jLabel5.setText("Quantity:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 270, 70, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 180, 70, 10));
 
         jToggleButton1.setText("ADD");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -219,10 +221,14 @@ public class addProduct extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 350, -1, -1));
-        getContentPane().add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 290, 110, 20));
+        getContentPane().add(jSpinner1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 200, 110, 20));
 
         jLabel6.setText("Category:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 210, 70, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 240, 70, 10));
+
+        jLabel3.setText("Price:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 240, -1, -1));
+        getContentPane().add(jTextFieldPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 260, 120, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -256,7 +262,7 @@ public class addProduct extends javax.swing.JFrame {
     }//GEN-LAST:event_UsersMouseClicked
 
     private void DashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardMouseClicked
-        profile prof = new profile();
+        adminprofile prof = new adminprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();
@@ -279,27 +285,38 @@ public class addProduct extends javax.swing.JFrame {
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         config db = new config();
 
-        String name = jTextField1.getText();
-        String cat = jTextField3.getText();
-        String quan = jSpinner1.getValue().toString();
-              
+        String name = jTextField1.getText().trim();
+        String cat = jTextField3.getText().trim();
+        int quan = (Integer) jSpinner1.getValue();
+        String priceStr = jTextFieldPrice.getText().trim();
 
-        if (name.isEmpty() || cat.isEmpty() || quan.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "All fields are required to fill in!");
+        if (name.isEmpty() || cat.isEmpty() || priceStr.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "All fields are required!");
             return;
         }
-            String sql = "INSERT INTO product ( p_name, p_category, p_quantity) VALUES ( ?, ?, ?)";
 
-            db.addRecord(sql, name, cat, quan);
+        if (quan <= 0) {
+            JOptionPane.showMessageDialog(null, "Quantity must be at least 1!");
+            return;
+        }
 
-            JOptionPane.showMessageDialog(null, "Registered!");
+        try {
+            double price = Double.parseDouble(priceStr);
+
+            String sql = "INSERT INTO product (p_name, p_category, p_quantity, p_price) VALUES (?, ?, ?, ?)";
+            db.addRecord(sql, name, cat, quan, price);
+
+            JOptionPane.showMessageDialog(null, "Product Added to Crochet Shop Successfully!");
 
             jTextField1.setText("");
             jTextField3.setText("");
-            jSpinner1.setValue("");
+            jTextFieldPrice.setText("");
+            jSpinner1.setValue(1); 
 
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid number for the price (e.g., 150.00)");
+        }
 
-        
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
@@ -348,6 +365,7 @@ public class addProduct extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -356,6 +374,7 @@ public class addProduct extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextFieldPrice;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JLabel type;
     private javax.swing.JLabel user;

@@ -289,7 +289,7 @@ public class updateProduct extends javax.swing.JFrame {
     }//GEN-LAST:event_UsersMouseClicked
 
     private void DashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardMouseClicked
-        profile prof = new profile();
+        adminprofile prof = new adminprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();
@@ -311,17 +311,33 @@ public class updateProduct extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-       
-        String id = jTextField2.getText();
-        String newName = jTextField1.getText();
-        String newCat = jTextField3.getText();
-        String newQuan = jSpinner1.getValue().toString();
 
         config conf = new config();
+
+        String id = jTextField2.getText().trim();
+        String newName = jTextField1.getText().trim();
+        String newCat = jTextField3.getText().trim();
+        int newQuan = (Integer) jSpinner1.getValue();
+
+        if (newName.isEmpty() || newCat.isEmpty() || id.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "All fields must be filled out to update a product!");
+            return;
+        }
+
+        if (newQuan < 0) {
+            JOptionPane.showMessageDialog(null, "Quantity cannot be less than 0!");
+            return;
+        }
+
         String sql = "UPDATE product SET p_name = ?, p_category = ?, p_quantity = ? WHERE p_id = ?";
+
         conf.updateRecord(sql, newName, newCat, newQuan, id);
 
-        JOptionPane.showMessageDialog(null, "Product Updated Successfully!");
+        JOptionPane.showMessageDialog(null, "Product '" + newName + "' Updated Successfully!");
+
+        products prod = new products();
+        prod.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed

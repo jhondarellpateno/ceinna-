@@ -36,10 +36,10 @@ public class deleteOrder extends javax.swing.JFrame {
         user.setText(UserSession.getU_name());
         type.setText(UserSession.getU_type());
         email.setText(UserSession.getU_email());
-        displayUser();
+        displayOrder();
     }
 
-    void displayUser() {
+    void displayOrder() {
         config conf = new config();
         String sql = "SELECT * FROM tbl_order";
         conf.displayData(sql, tableee);
@@ -352,20 +352,36 @@ public class deleteOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_idActionPerformed
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
-        String iid = id.getText();
+        String iid = id.getText().trim();
 
-        int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this" + iid + "?", "Delete Warning", JOptionPane.YES_NO_OPTION);
+        if (iid.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select an order from the list to delete first!");
+            return;
+        }
+
+
+        int confirm = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to delete Order ID: " + iid + "?\n"
+                + "This will permanently remove the sale record from the system.",
+                "Warning: Confirm Deletion",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            config conf = new config();
+            try {
+                config conf = new config();
 
-            String sql = "DELETE FROM tbl_order WHERE o_id = ?";
+                String sql = "DELETE FROM tbl_order WHERE o_id = ?";
+                conf.deleteRecord(sql, iid);
 
-            conf.deleteRecord(sql, iid);
+                id.setText("");
+                displayOrder();
 
-            id.setText("");
+                JOptionPane.showMessageDialog(null, "Order #" + iid + " has been successfully removed.");
 
-            JOptionPane.showMessageDialog(null, "Order deleted successfully!");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error: Could not delete order. " + e.getMessage());
+            }
         }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
@@ -405,7 +421,7 @@ public class deleteOrder extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        profile prof = new profile();
+        customerprofile prof = new customerprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();

@@ -193,7 +193,7 @@ public class Masterlist extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -216,14 +216,14 @@ public class Masterlist extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 150, 70, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 150, 70, -1));
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 120, 30));
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 110, 90, 30));
 
         jButton3.setText("Add");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -231,7 +231,7 @@ public class Masterlist extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 150, 60, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 150, 60, -1));
 
         jButton4.setText("Update");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -239,7 +239,7 @@ public class Masterlist extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 150, 70, -1));
+        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, 70, -1));
 
         jToggleButton1.setText("Search");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -247,7 +247,7 @@ public class Masterlist extends javax.swing.JFrame {
                 jToggleButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 143, 70, 30));
+        getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 110, 70, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -256,21 +256,35 @@ public class Masterlist extends javax.swing.JFrame {
         int selectedRow = jTable1.getSelectedRow();
 
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(null, "Select a row first!");
+            JOptionPane.showMessageDialog(null, "Please select an account from the table first!");
             return;
         }
 
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
         String id = model.getValueAt(selectedRow, 0).toString();
+        String userName = model.getValueAt(selectedRow, 1).toString();
+        String userEmail = model.getValueAt(selectedRow, 2).toString();
 
-        config conf = new config();
-        String sql = "DELETE FROM account WHERE id = ?";
-        conf.deleteRecord(sql, id);
+        if (id.equals(String.valueOf(UserSession.getU_id()))) {
+            JOptionPane.showMessageDialog(null, "You cannot delete your own account while logged in!");
+            return;
+        }
 
-        model.removeRow(selectedRow);
+        int response = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to delete the account for: \nName: " + userName + "\nEmail: " + userEmail + "?",
+                "WARNING: Confirm Account Deletion",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.ERROR_MESSAGE); 
 
-        JOptionPane.showMessageDialog(null, "Deleted Successfully!");
+        if (response == JOptionPane.YES_OPTION) {
+            config conf = new config();
+            String sql = "DELETE FROM tbl_user WHERE u_id = ?"; 
+
+            conf.deleteRecord(sql, id);
+            model.removeRow(selectedRow);
+
+            JOptionPane.showMessageDialog(null, "Account successfully removed from the system.");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -285,21 +299,33 @@ public class Masterlist extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    int selectedRow = jTable1.getSelectedRow();
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "No account selected! Please click a user from the table first.");
+            return;
+        }
 
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-        String id = model.getValueAt(selectedRow, 0).toString();
-        String newName = model.getValueAt(selectedRow, 1).toString();
-        String newEmail = model.getValueAt(selectedRow, 2).toString();
-        String newType = model.getValueAt(selectedRow, 5).toString();
-        String newStatus = model.getValueAt(selectedRow, 4).toString();
+            Object idValue = model.getValueAt(selectedRow, 0);
 
-        config conf = new config();
-        String sql = "UPDATE account SET username = ?, email = ?, type = ?, status = ? WHERE id = ?";
-        conf.updateRecord(sql, newName, newEmail, newType, newStatus, id);
+            if (idValue == null || idValue.toString().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: Selected user has no valid ID.");
+                return;
+            }
 
-        JOptionPane.showMessageDialog(null, "Account for " + newName + " Updated Successfully!");
+            String id = idValue.toString();
+
+            updateUser update = new updateUser(id);
+            update.setLocationRelativeTo(null);
+            update.setVisible(true);
+
+            this.dispose();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "An unexpected error occurred: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
@@ -333,7 +359,7 @@ public class Masterlist extends javax.swing.JFrame {
     }//GEN-LAST:event_UsersMouseClicked
 
     private void DashboardMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_DashboardMouseClicked
-        profile prof = new profile();
+        adminprofile prof = new adminprofile();
         prof.setLocationRelativeTo(null);
         prof.setVisible(true);
         this.dispose();
