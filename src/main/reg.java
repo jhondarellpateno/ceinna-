@@ -180,47 +180,45 @@ public class reg extends javax.swing.JFrame {
 
         config db = new config();
 
-        String user = username.getText();
-        String em = email.getText();
-        String pass = password.getText();
+        String user = username.getText().trim();
+        String em = email.getText().trim();
+        String pass = password.getText(); 
 
         if (user.isEmpty() || em.isEmpty() || pass.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Fill up the blank!");
+            JOptionPane.showMessageDialog(null, "All fields are required!");
             return;
         }
 
         String emailPattern = "^[A-Za-z0-9+_.-]+@(gmail\\.com|yahoo\\.com|outlook\\.com)$";
-
         if (!em.matches(emailPattern)) {
-            JOptionPane.showMessageDialog(null, "Invalid Email!");
-            username.setText("");
+            JOptionPane.showMessageDialog(null, "Please use a valid Gmail, Yahoo, or Outlook address.");
             email.setText("");
-            password.setText("");
             return;
-
         }
+
         String qry = "SELECT * FROM account WHERE email = ?";
         java.util.List<java.util.Map<String, Object>> result = db.fetchRecords(qry, em);
 
         if (!result.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Email already exists. Please enter another email.");
-            username.setText("");
+            JOptionPane.showMessageDialog(null, "Email already exists. Please use a different one.");
             email.setText("");
-            password.setText("");
         } else {
-            String hashedPass = db.hashPassword(pass);
-            String sql = "INSERT INTO account ( username, email, password, status, type) VALUES ( ?, ?, ?, ?, ?)";
+            try {
+                String hashedPass = db.hashPassword(pass);
+                String sql = "INSERT INTO account (username, email, password, status, type, image) VALUES (?, ?, ?, ?, ?, ?)";
 
-            db.addRecord(sql, user, em, hashedPass, "Pending", "User");
-            JOptionPane.showMessageDialog(null, "Successfully Register!");
+                db.addRecord(sql, user, em, hashedPass, "Pending", "User", "src/pic/profile.png");
 
-            login logFrame = new login();
-            logFrame.setLocationRelativeTo(null);
-            logFrame.setVisible(true);
-            this.dispose();
-            
-            
+                JOptionPane.showMessageDialog(null, "Registration Successful! Waiting for Admin Approval.");
 
+                login logFrame = new login();
+                logFrame.setLocationRelativeTo(null);
+                logFrame.setVisible(true);
+                this.dispose();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Registration Error: " + e.getMessage());
+            }
         }
     }//GEN-LAST:event_registerActionPerformed
 
